@@ -39,14 +39,13 @@ public class StatsAspect {
 		Object[] params = joinPoint.getArgs();		
 		String userName = params[0].toString();
 		UUID uuid = retval;
-		String secretContent = params[1].toString();		
+		String secretContent = "";
+		if(params[1] != null)			
+			secretContent = params[1].toString();		
 		stats.updateCreateOccurance(userName, uuid, secretContent);
 		System.out.println(userName+" created a secret with UUID: "+uuid);		
 					
-	}	
-	
-	
-	
+	}
 	
 	
 	@After("execution(public void edu.sjsu.cmpe275.aop.SecretService.shareSecret(..))")

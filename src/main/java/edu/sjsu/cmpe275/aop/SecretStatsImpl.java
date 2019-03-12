@@ -32,13 +32,22 @@ public class SecretStatsImpl implements SecretStats {
 
 	public int getLengthOfLongestSecret() {
 		// TODO Auto-generated method stub	
-		String longestString = Collections.max(secrets.values());
-		return longestString.length();
+		int longestStringLength = 0;
+		System.out.println("longest Secret: "+ Collections.max(secrets.values()));
+		if(!secrets.isEmpty()) {
+			for(String secret : secrets.values()) {
+				if (secret.length()>longestStringLength)
+					longestStringLength = secret.length();
+			}
+		}
+		return longestStringLength;
 	}
 
 
 	public String getMostTrustedUser() {
 		// TODO Auto-generated method stub
+		if(trustScore.isEmpty())
+			return null;
 		int maxTrustScore = Collections.max(trustScore.values());
 		String mostTrusted = "";
 		for (String trustedUser: trustScore.keySet()) {
@@ -58,6 +67,8 @@ public class SecretStatsImpl implements SecretStats {
 //	@Override
 	public String getWorstSecretKeeper() {
 		// TODO Auto-generated method stub
+		if(trustScore.isEmpty())
+			return null;
 		int minTrustScore = Collections.min(trustScore.values());
 		String minTrusted="";
 		for (String untrustedUser: trustScore.keySet()) {
@@ -78,6 +89,8 @@ public class SecretStatsImpl implements SecretStats {
 //	@Override
 	public String getBestKnownSecret() {
 		// TODO Auto-generated method stub
+		if(secretScore.isEmpty())
+			return null;
 		int maxScore = Collections.max(secretScore.values());
 		String mostKnown = null;
 		for( UUID secret: secretScore.keySet()) {
@@ -252,6 +265,7 @@ public class SecretStatsImpl implements SecretStats {
 		
 		createOccurance.get(userName).add(uuid);
 		secrets.put(uuid, secretContent);
+		
 		
 	}
 	

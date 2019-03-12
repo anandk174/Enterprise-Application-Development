@@ -1,6 +1,7 @@
 package edu.sjsu.cmpe275.aop.aspect;
 
 import java.io.IOException;
+import java.util.*;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -30,24 +31,26 @@ public class RetryAspect {
 //		}
 //	}
 	
-//	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.createSecret(..))")
-//	public void retryCreateSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-//		System.out.println("\nChecking network before executing createSecret function");
-//		int attempt = 0;
-//		while(attempt < 3) {
-//			try {
-//				proceedingJoinPoint.proceed();
-//				break;
-//			}
-//			catch (IOException e) {
-//				if (attempt < 3) {
-//					attempt++;
-//					continue;
-//				}	
-//				else throw e;				
-//			}
-//		}
-//	}
+	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.createSecret(..))")
+	public UUID retryCreateSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+		System.out.println("\nChecking network before executing createSecret function");
+		int attempt = 0;
+		Object result = null;
+		while(attempt < 3) {
+			try {
+				result = proceedingJoinPoint.proceed();
+				return (UUID)result;				
+			}
+			catch (IOException e) {
+				if (attempt < 3) {
+					attempt++;
+					continue;
+				}	
+				else throw e;				
+			}
+		}
+		return null;
+	}
 	
 	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.readSecret(..))")
 	public void retryReadSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -68,24 +71,24 @@ public class RetryAspect {
 		}
 	}
 	
-//	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.shareSecret(..))")
-//	public void retryShareSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-//		System.out.println("\nChecking network before executing shareSecret function");
-//		int attempt = 0;
-//		while(attempt < 3) {
-//			try {
-//				proceedingJoinPoint.proceed();
-//				break;
-//			}
-//			catch (IOException e) {
-//				if (attempt < 3) {
-//					attempt++;
-//					continue;
-//				}	
-//				else throw e;				
-//			}
-//		}
-//	}
+	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.shareSecret(..))")
+	public void retryShareSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+		System.out.println("\nChecking network before executing shareSecret function");
+		int attempt = 0;
+		while(attempt < 3) {
+			try {
+				proceedingJoinPoint.proceed();
+				break;
+			}
+			catch (IOException e) {
+				if (attempt < 3) {
+					attempt++;
+					continue;
+				}	
+				else throw e;				
+			}
+		}
+	}
 	
 	@Around("execution(public * edu.sjsu.cmpe275.aop.SecretService.unshareSecret(..))")
 	public void retryUnshareSecret(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {

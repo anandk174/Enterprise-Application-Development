@@ -34,10 +34,13 @@ public class ValidationAspect {
 			System.out.println("*-> The userId provided is null");
 			throw new IllegalArgumentException();
 		}
-		if(params[1].toString().length() > 100) {
-			System.out.println("*-> The secret is more than 100 characters long");
-			throw new IllegalArgumentException();
+		if (params[1] != null) {
+			if(params[1].toString().length() > 100) {
+				System.out.println("*-> The secret is more than 100 characters long");
+				throw new IllegalArgumentException();
+			}
 		}
+		
 	}
 	
 	@Before("execution(public * edu.sjsu.cmpe275.aop.SecretService.readSecret(..))")	

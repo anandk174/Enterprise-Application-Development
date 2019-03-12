@@ -17,11 +17,13 @@ public class App {
 
         try {
         	UUID secret1 = secretService.createSecret("Alice", "My little secret");         
-        	UUID secret2 = secretService.createSecret("Alice", "My little secret");
-        	secretService.shareSecret("Alice", secret1, "Bob");
-        	stats.resetStatsAndSystem();
-        	UUID secret3 = secretService.createSecret("Anand", "A"); 
-        	secretService.shareSecret("Anand", secret3, "Aditya");
+        	UUID secret2 = secretService.createSecret("Anand", "Anand's Special secret");
+        	secretService.shareSecret("Alice", secret1, null);
+        	secretService.shareSecret("Bob", secret1, "Candice");
+        	secretService.shareSecret("Anand", secret2, "Candice");
+        	secretService.shareSecret("Alice", secret1, "Candice");
+//        	stats.resetStatsAndSystem();
+        	
         } catch (Exception e) {
             e.printStackTrace();
         }
